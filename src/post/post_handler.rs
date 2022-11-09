@@ -17,9 +17,13 @@ pub async fn get_posts(
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
-    
 
-    Ok(HttpResponse::Ok().json(posts))
+    if let Some(posts) = posts {
+        Ok(HttpResponse::Ok().json(posts))
+    } else {
+        let res = HttpResponse::NotFound().body(format!("No user found"));
+        Ok(res)
+    }
 }
 
 pub async fn add_post(
