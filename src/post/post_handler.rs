@@ -17,6 +17,7 @@ pub async fn get_posts(
     })
     .await?
     .map_err(actix_web::error::ErrorInternalServerError)?;
+    
 
     Ok(HttpResponse::Ok().json(posts))
 }

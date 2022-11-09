@@ -19,6 +19,7 @@ pub fn find_all_post(
     let per_page: Option<i64> = Some(size.to_owned());
     let page_index: i64 = if page > 0 { page } else { 1i64 };
     let page_index = page;
+
     let mut query = post
         .order(created_at.desc())
         .filter(active.eq(true))
@@ -27,6 +28,7 @@ pub fn find_all_post(
         "]-----] post_service::find_all_post.query [------[ {:?}",
         query
     );
+
     if let Some(per_page) = per_page {
         use std::cmp::min;
         query = query.per_page(min(per_page, 25));
@@ -34,6 +36,7 @@ pub fn find_all_post(
     // info!("]-----] post_service::find_all_post.query [------[ {:?}", query);
 
     let (posts, total_pages) = query.load_and_count_pages::<Post>(conn)?;
+
     let to_display = posts.into_iter();
     let mut post_res: Vec<PostRes> = Vec::new();
     for post_in in to_display {

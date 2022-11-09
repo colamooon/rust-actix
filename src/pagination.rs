@@ -3,7 +3,7 @@ use diesel::prelude::*;
 use diesel::query_builder::*;
 use diesel::query_dsl::methods::LoadQuery;
 use diesel::sql_types::BigInt;
-
+use log::info;
 
 pub trait Paginate: Sized {
     fn paginate(self, page: i64) -> Paginated<Self>;
@@ -46,9 +46,26 @@ impl<T> Paginated<T> {
     where
         Self: LoadQuery<'a, MysqlConnection, (U, i64)>,
     {
+        info!("]-----] pagination::load_and_count_pages.call [------[ ");
         let per_page = self.per_page;
+        info!(
+            "]-----] pagination::load_and_count_pages.per_page [------[ {:?}",
+            self.per_page
+        );
+        info!(
+            "]-----] pagination::load_and_count_pages.page [------[ {:?}",
+            self.page
+        );
         let results = self.load::<(U, i64)>(conn)?;
+        info!(
+            "]-----] pagination::load_and_count_pages.results [------[ {:?}",
+            results.len()
+        );
         let total = results.get(0).map(|x| x.1).unwrap_or(0);
+        info!(
+            "]-----] pagination::load_and_count_pages.total [------[ {:?}",
+            total
+        );
         let records = results.into_iter().map(|x| x.0).collect();
         let total_pages = (total as f64 / per_page as f64).ceil() as i64;
         Ok((records, total_pages))
@@ -66,6 +83,10 @@ where
     T: QueryFragment<Mysql>,
 {
     fn walk_ast<'b>(&'b self, mut out: AstPass<'_, 'b, Mysql>) -> QueryResult<()> {
+        info!(
+            "]-----] pagination::walk_ast.offset [------[ {:?}",
+            &self.offset
+        );
         out.push_sql("SELECT *, COUNT(*) OVER () FROM (");
         self.query.walk_ast(out.reborrow())?;
         out.push_sql(") t LIMIT ");
