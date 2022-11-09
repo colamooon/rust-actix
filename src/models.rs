@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Queryable)]
 pub struct MemberInfo {
-    pub id: i64,
+    pub id: i32,
     pub active: bool,
     pub created_at: Option<NaiveDateTime>,
     pub created_id: Option<i64>,

@@ -8,7 +8,7 @@ use log::info;
 use super::post::NewPostReq;
 
 pub fn find_all_post(
-    conn: &mut MysqlConnection,
+    conn: &mut PgConnection,
     page: i64,
     size: i64,
 ) -> Result<Option<Vec<PostRes>>, DbError> {
@@ -47,7 +47,7 @@ pub fn find_all_post(
 }
 
 pub fn insert_new_post(
-    conn: &mut MysqlConnection,
+    conn: &mut PgConnection,
     new_post_req: &NewPostReq,
 ) -> Result<Post, DbError> {
     print!(

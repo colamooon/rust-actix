@@ -2,12 +2,12 @@
 
 diesel::table! {
     member_info (id) {
-        id -> Bigint,
+        id -> Int4,
         active -> Bool,
-        created_at -> Nullable<Datetime>,
-        created_id -> Nullable<Bigint>,
-        updated_at -> Nullable<Datetime>,
-        updated_id -> Nullable<Bigint>,
+        created_at -> Nullable<Timestamp>,
+        created_id -> Nullable<Int8>,
+        updated_at -> Nullable<Timestamp>,
+        updated_id -> Nullable<Int8>,
         username -> Varchar,
         display_name -> Varchar,
         password -> Nullable<Varchar>,
@@ -17,12 +17,12 @@ diesel::table! {
 
 diesel::table! {
     post (id) {
-        id -> Bigint,
+        id -> Int4,
         active -> Bool,
-        created_at -> Nullable<Datetime>,
-        created_id -> Nullable<Bigint>,
-        updated_at -> Nullable<Datetime>,
-        updated_id -> Nullable<Bigint>,
+        created_at -> Nullable<Timestamp>,
+        created_id -> Nullable<Int8>,
+        updated_at -> Nullable<Timestamp>,
+        updated_id -> Nullable<Int8>,
         title -> Varchar,
         body -> Text,
         published -> Bool,

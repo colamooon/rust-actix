@@ -14,7 +14,7 @@ async fn main() -> std::io::Result<()> {
 
     // set up database connection pool
     let conn_spec = std::env::var("DATABASE_URL").expect("DATABASE_URL");
-    let manager = ConnectionManager::<MysqlConnection>::new(conn_spec);
+    let manager = ConnectionManager::<PgConnection>::new(conn_spec);
     let connection_timeout = Duration::new(10, 0);
     let pool = r2d2::Pool::builder()
         .max_size(100)

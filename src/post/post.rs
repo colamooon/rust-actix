@@ -1,3 +1,5 @@
+use std::time::SystemTime;
+
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -8,12 +10,12 @@ use crate::schema::post;
 #[diesel(primary_key(id))]
 #[diesel(table_name = post)]
 pub struct Post {
-    #[diesel(deserialize_as = i64)]
-    pub id: Option<i64>,
+    #[diesel(deserialize_as = i32)]
+    pub id: Option<i32>,
     pub active: bool,
-    pub created_at: Option<NaiveDateTime>,
+    pub created_at: Option<SystemTime>,
     pub created_id: Option<i64>,
-    pub updated_at: Option<NaiveDateTime>,
+    pub updated_at: Option<SystemTime>,
     pub updated_id: Option<i64>,
     pub title: String,
     pub body: String,
@@ -24,19 +26,19 @@ pub struct Post {
 pub struct NewPostReq {
     pub title: String,
     pub body: String,
-    pub created_at: Option<NaiveDateTime>,
+    pub created_at: Option<SystemTime>,
     pub created_id: Option<i64>,
-    pub updated_at: Option<NaiveDateTime>,
+    pub updated_at: Option<SystemTime>,
     pub updated_id: Option<i64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PostRes {
-    pub id: Option<i64>,
+    pub id: Option<i32>,
     pub active: bool,
-    pub created_at: Option<DateTime<Utc>>,
+    pub created_at: Option<SystemTime>,
     pub created_id: Option<i64>,
-    pub updated_at: Option<DateTime<Utc>>,
+    pub updated_at: Option<SystemTime>,
     pub updated_id: Option<i64>,
     pub title: String,
     pub body: String,
@@ -47,9 +49,9 @@ pub fn render(post: &Post) -> PostRes {
     PostRes {
         id: post.id,
         active: post.active,
-        created_at: naive_to_utc(post.created_at),
+        created_at: post.created_at,
         created_id: post.created_id,
-        updated_at: naive_to_utc(post.updated_at),
+        updated_at: post.updated_at,
         updated_id: post.updated_id,
         title: post.title.to_owned(),
         body: post.body.to_owned(),

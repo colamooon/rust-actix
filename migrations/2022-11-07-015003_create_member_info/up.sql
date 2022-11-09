@@ -1,10 +1,10 @@
 -- Your SQL goes here
 CREATE TABLE member_info (
-    id bigint auto_increment primary key,
+    id SERIAL primary key,
     active boolean not null default true,
-    created_at datetime(6) null,
+    created_at timestamp null,
     created_id bigint null,
-    updated_at datetime(6) null,
+    updated_at timestamp null,
     updated_id bigint null,
     username VARCHAR(255) NOT NULL,
     display_name VARCHAR(255) NOT NULL,
